@@ -17,8 +17,6 @@ provider:
   region: us-east-2
 
 package:
-  include:
-    - app/**
   exclude:
     - node_modules/**
     - .serverless/**
