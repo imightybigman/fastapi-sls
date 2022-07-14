@@ -1,0 +1,45 @@
+service: fastapi-sls
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  tags:
+    Name: fastapi-sls-johnny-test
+
+  stage: dev
+  region: us-east-2
+
+package:
+  include:
+    - app/**
+  exclude:
+    - node_modules/**
+    - .serverless/**
+    - __pycache__/**
+    - package.json
+    - package-lock.json
+    - serverless.yml
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  fastapi:
+    handler: main.handler
+    events:
+      - httpApi:
+          path: "/{proxy+}"
+          method: ANY
+          cors: true
+
+
+plugins:
+  - serverless-python-requirements
